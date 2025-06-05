@@ -5,6 +5,7 @@ import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import express from 'express';
 import { z } from 'zod';
 import configuration from './config.js';
+import { Logger } from './logger.js';
 import {
   createDocumentPageTool,
   createDocumentTool,
@@ -99,6 +100,8 @@ const server = new McpServer({
   name: 'clickup-mcp-server',
   version: '0.7.2',
 });
+
+const logger = new Logger('SSEServer');
 
 const app = express();
 app.use(express.json());
@@ -1130,7 +1133,7 @@ export function startSSEServer() {
     const transport = new SSEServerTransport('/messages', res);
     transports.sse[transport.sessionId] = transport;
 
-    console.log(
+    logger.info(
       `New SSE connection established with sessionId: ${transport.sessionId}`
     );
 
@@ -1153,6 +1156,6 @@ export function startSSEServer() {
 
   const PORT = Number(configuration.port ?? '3231');
   app.listen(PORT, () => {
-    console.log(`Connect to sse with http://localhost:${PORT}/sse`);
+    logger.info(`Connect to sse with http://localhost:${PORT}/sse`);
   });
 }

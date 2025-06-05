@@ -18,6 +18,7 @@ import {
 } from '../../services/clickup/types.js';
 import { parseDueDate } from '../utils.js';
 import { clickUpServices } from '../../services/shared.js';
+import { Logger } from '../../logger.js';
 import { 
   formatTaskData,
   resolveListIdWithValidation,
@@ -28,6 +29,7 @@ import {
 
 // Use shared services instance
 const { task: taskService } = clickUpServices;
+const logger = new Logger('SingleTaskOps');
 
 //=============================================================================
 // COMMON VALIDATION UTILITIES
@@ -60,7 +62,7 @@ const validateDueDate = (dueDate?: string) => {
 
 // Common error handler
 const handleOperationError = (operation: string, error: any) => {
-  console.error(`Error ${operation}:`, error);
+  logger.error(`Error ${operation}`, error);
   throw error;
 };
 

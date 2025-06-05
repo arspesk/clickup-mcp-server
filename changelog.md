@@ -30,7 +30,8 @@
   - Document listing and search across workspace
   - Document creation with customizable visibility
   - Document page management (create, list, get, update)
-  - Optional module activation via `DOCUMENT_SUPPORT=true` environment variable
+  - Document tools are enabled by default and can be disabled via the
+    `DOCUMENT_SUPPORT=false` environment variable
   - Support for both API V2 and V3 endpoints
 - Added comprehensive Time Tracking functionality:
   - View time entries for tasks with filtering options

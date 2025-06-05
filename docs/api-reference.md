@@ -974,7 +974,7 @@ Add the "feature" tag to the task "Implement Authentication"
 |------|-------------|-------------------|-------------------|
 | create_document | Create a document | `name`, `parent` (with `id` and `type`), `visibility`, `create_page` | None |
 | get_document | Get document details | `documentId` | None |
-| list_documents | List documents | None | `id`, `creator`, `deleted`, `archived`, `parent_id`, `parent_type`, `limit`, `next_cursor` |
+| list_documents | List documents | None | `id`, `creator`, `deleted`, `archived`, `parent_id`, `parent_type`, `limit`, `next_cursor`[^parent-type-note] |
 | list_document_pages | List document pages | `documentId` | `max_page_depth` (-1 for unlimited) |
 | get_document_pages | Get document pages | `documentId`, `pageIds` | `content_format` ('text/md'/'text/html') |
 | create_document_page | Create a document page | `documentId`, `name` | `content`, `sub_title`, `parent_page_id` |
@@ -988,6 +988,8 @@ Add the "feature" tag to the task "Implement Authentication"
   - List (6)
   - All (7)
   - Workspace (12)
+
+[^parent-type-note]: `parent_type` must be lowercase (`space`, `folder`, `list`).
 
 - **Visibility Settings**:
   - PUBLIC: Document is visible to all workspace members

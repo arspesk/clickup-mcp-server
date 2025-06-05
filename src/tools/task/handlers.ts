@@ -134,13 +134,13 @@ function buildUpdateData(params: any): UpdateTaskData {
 
   // Handle time estimate if provided - convert from string to minutes
   if (params.time_estimate !== undefined) {
-    // Log the time estimate for debugging
-    console.log(`Original time_estimate: ${params.time_estimate}, typeof: ${typeof params.time_estimate}`);
+    // Log the time estimate for debugging without interfering with JSON-RPC
+    logger.debug(`Original time_estimate: ${params.time_estimate}, typeof: ${typeof params.time_estimate}`);
 
     // Parse and convert to number in minutes
     const minutes = parseTimeEstimate(params.time_estimate);
 
-    console.log(`Converted time_estimate: ${minutes}`);
+    logger.debug(`Converted time_estimate: ${minutes}`);
     updateData.time_estimate = minutes;
   }
 

@@ -460,7 +460,7 @@ export class WorkspaceService extends BaseClickUpService {
         profilePicture: member.user?.profilePicture
       }));
     } catch (error) {
-      console.error('Error getting workspace members:', error);
+      logger.error('Error getting workspace members', error);
       throw error;
     }
   }

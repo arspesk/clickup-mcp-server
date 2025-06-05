@@ -974,37 +974,32 @@ Add the "feature" tag to the task "Implement Authentication"
 |------|-------------|-------------------|-------------------|
 | create_document | Create a document | `name`, `parent` (with `id` and `type`), `visibility`, `create_page` | None |
 | get_document | Get document details | `documentId` | None |
-| list_documents | List documents | None | `id`, `creator`, `deleted`, `archived`, `parent_id`, `parent_type`, `limit`, `next_cursor`[^parent-type-note] |
+| list_documents | List documents | None | `id`, `creator`, `deleted`, `archived`, `parent_id`, `parent_type`, `limit`, `next_cursor` |
 | list_document_pages | List document pages | `documentId` | `max_page_depth` (-1 for unlimited) |
-| get_document_pages | Get document pages | `documentId`, `pageIds` | `content_format` ('text/md'/'text/html') |
+| get_document_pages | Get document pages | `documentId` | `pageIds`, `max_page_depth`, `content_format` ('text/md'/'text/plain') |
 | create_document_page | Create a document page | `documentId`, `name` | `content`, `sub_title`, `parent_page_id` |
 | update_document_page | Update a document page | `documentId`, `pageId` | `name`, `sub_title`, `content`, `content_format`, `content_edit_mode` |
 
 ### Document Parameters
 
 - **Parent Types**:
-  - Space (4)
-  - Folder (5)
-  - List (6)
-  - All (7)
-  - Workspace (12)
-  - For `list_documents`, use lowercase values (`space`, `folder`, `list`)
-
-[^parent-type-note]: `parent_type` must be lowercase (`space`, `folder`, `list`).
+  - SPACE (4)
+  - FOLDER (5)
+  - LIST (6)
+  - EVERYTHING (7)
+  - WORKSPACE (12)
 
 - **Visibility Settings**:
-  - PUBLIC: Document is visible to all workspace members
-  - PRIVATE: Document is visible only to specific members
+  - public: Document is visible to all workspace members
+  - private: Document is visible only to specific members
 
 - **Content Formats**:
   - text/md: Markdown format (default)
-  - text/html: HTML format (for get_document_pages)
-  - text/plain: Plain text format (for update_document_page)
+  - text/plain: Plain text format
 
 - **Content Edit Modes**:
   - replace: Replace existing content (default)
   - append: Add content at the end
-  - prepend: Add content at the beginning
 
 ### Best Practices and Limits
 
@@ -1039,7 +1034,7 @@ Add the "feature" tag to the task "Implement Authentication"
     "id": "123456",
     "type": 4
   },
-  "visibility": "PUBLIC",
+  "visibility": "public",
   "create_page": true
 }
 ```

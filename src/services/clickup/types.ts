@@ -627,7 +627,7 @@ export interface CreateDocumentData {
     id: string;
     type: ClickUpParentType;
   };
-  visibility: 'PUBLIC' | 'PRIVATE';
+  visibility: 'public' | 'private';
   create_page: boolean;
 }
 
@@ -673,14 +673,13 @@ export interface UpdateDocumentPageData {
   sub_title?: string;
   content?: string;
   content_format?: 'text/md' | 'text/plain';
-  content_edit_mode?: 'replace' | 'append' | 'prepend';
+  content_edit_mode?: 'replace' | 'append';
 }
 
 /**
  * Options for retrieving document pages (query parameters)
  */
 export interface DocumentPagesOptions {
-  content_format?: 'text/md' | 'text/html';
+  content_format?: 'text/md' | 'text/plain';
   max_page_depth?: number;
-  pageIds: string[];
-} 
+}

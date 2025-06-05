@@ -26,7 +26,6 @@ services:
       - CLICKUP_API_KEY=${CLICKUP_API_KEY}
       - CLICKUP_TEAM_ID=${CLICKUP_TEAM_ID}
       - ENABLE_SSE=true
-      - DOCUMENT_SUPPORT=true
     volumes:
       - ./src:/app/src
     restart: unless-stopped

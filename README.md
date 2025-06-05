@@ -42,7 +42,6 @@ Add this entry to your client's MCP settings JSON file:
       "env": {
         "CLICKUP_API_KEY": "your-api-key",
         "CLICKUP_TEAM_ID": "your-team-id",
-        "DOCUMENT_SUPPORT": "true"
       }
     }
   }
@@ -53,7 +52,7 @@ Or use this npx command:
 
 `npx -y @taazkareem/clickup-mcp-server@latest --env CLICKUP_API_KEY=your-api-key --env CLICKUP_TEAM_ID=your-team-id`
 
-**Obs: if you don't pass "DOCUMENT_SUPPORT": "true", the default is false and document support will not be active.**
+**Obs: document support is enabled by default. Set `DOCUMENT_SUPPORT` to `false` if you need to disable it.**
 
 Additionally, you can use the `DISABLED_TOOLS` environment variable or `--env DISABLED_TOOLS` argument to disable specific tools. Provide a comma-separated list of tool names to disable (e.g., `create_task,delete_task`).
 
@@ -103,7 +102,6 @@ services:
       - CLICKUP_TEAM_ID=${CLICKUP_TEAM_ID}
       - ENABLE_SSE=true
       - LOG_LEVEL=info
-      - DOCUMENT_SUPPORT=true
     volumes:
       - ./src:/app/src
     restart: unless-stopped

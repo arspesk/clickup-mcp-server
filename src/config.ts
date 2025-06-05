@@ -8,10 +8,11 @@
  * securely to this file when running the hosted server at smithery.ai. Optionally,
  * they can be parsed via command line arguments when running the server locally.
  *
- * The document support is optional and can be passed via command line arguments.
- * The default value is 'false' (string), which means document support will be disabled if
- * no parameter is passed. Pass it as 'true' (string) to enable it.
- */
+ * Document support can be toggled via the `DOCUMENT_SUPPORT` environment
+ * variable or command line argument. By default the feature is enabled.
+ * Set the value to 'false' (string) to disable document tools when launching
+ * the server.
+*/
 
 // Parse any command line environment arguments
 const args = process.argv.slice(2);
@@ -85,7 +86,7 @@ const configuration: Config = {
     process.env.DOCUMENT_SUPPORT ||
     process.env.DOCUMENT_MODULE ||
     process.env.DOCUMENT_MODEL ||
-    'false',
+    'true',
   logLevel: parseLogLevel(envArgs.logLevel || process.env.LOG_LEVEL),
   disabledTools:
     (envArgs.disabledTools || process.env.DISABLED_TOOLS || process.env.DISABLED_COMMANDS)

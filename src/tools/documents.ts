@@ -49,7 +49,7 @@ export const createDocumentTool = {
       },
       visibility: {
         type: "string",
-        enum: ["PUBLIC", "PRIVATE"],
+        enum: ["public", "private"],
         description: "Document visibility setting"
       },
       create_page: {
@@ -110,8 +110,8 @@ export const listDocumentsTool = {
       },
       parent_type: {
         type: "string",
-        enum: ["space", "folder", "list"],
-        description: "Type of the parent container (space, folder, or list)"
+        enum: ["SPACE", "FOLDER", "LIST", "EVERYTHING", "WORKSPACE"],
+        description: "Type of the parent container location"
       },
       limit: {
         type: "number",
@@ -154,7 +154,7 @@ export const listDocumentPagesTool = {
  */
 export const getDocumentPagesTool = {
   name: "get_document_pages",
-  description: "Gets the content of specific pages from a document",
+  description: "Gets the content of pages from a document. If no pageIds are provided, all pages are returned.",
   inputSchema: {
     type: "object",
     properties: {
@@ -167,16 +167,22 @@ export const getDocumentPagesTool = {
         items: {
           type: "string"
         },
-        description: "Array of page IDs to retrieve"
+        description: "Optional array of page IDs to retrieve",
+        optional: true
+      },
+      max_page_depth: {
+        type: "number",
+        description: "Maximum depth of pages to retrieve (-1 for unlimited)",
+        optional: true
       },
       content_format: {
         type: "string",
-        enum: ["text/md", "text/html"],
+        enum: ["text/md", "text/plain"],
         description: "Format of the content to retrieve",
         optional: true
       }
     },
-    required: ["documentId", "pageIds"]
+    required: ["documentId"]
   }
 };
 
@@ -222,7 +228,7 @@ export const createDocumentPageTool = {
  */
 export const updateDocumentPageTool = {
   name: "update_document_page",
-  description: "Updates an existing page in a ClickUp document. Supports updating name, subtitle, and content with different edit modes (replace/append/prepend).",
+  description: "Updates an existing page in a ClickUp document. Supports updating name, subtitle, and content with replace or append modes.",
   inputSchema: {
     type: "object",
     properties: {
@@ -251,7 +257,7 @@ export const updateDocumentPageTool = {
       },
       content_edit_mode: {
         type: "string",
-        enum: ["replace", "append", "prepend"],
+        enum: ["replace", "append"],
         description: "How to update the content. Defaults to replace",
         optional: true
       },
@@ -386,8 +392,8 @@ export async function handleListDocuments(parameters: any) {
     if (archived !== undefined) options.archived = archived;
     if (parent_id !== undefined) options.parent_id = parent_id;
     if (parent_type !== undefined) {
-      const normalized = String(parent_type).toLowerCase();
-      const allowed = ["space", "folder", "list"];
+      const normalized = String(parent_type).toUpperCase();
+      const allowed = ["SPACE", "FOLDER", "LIST", "EVERYTHING", "WORKSPACE"];
       if (allowed.includes(normalized)) {
         options.parent_type = normalized;
       }
@@ -449,25 +455,29 @@ export async function handleListDocumentPages(params: any) {
  * Handler for getting document pages
  */
 export async function handleGetDocumentPages(params: any) {
-  const { documentId, pageIds, content_format } = params;
+  const { documentId, pageIds, content_format, max_page_depth } = params;
 
   if (!documentId) {
     return sponsorService.createErrorResponse('Document ID is required');
   }
 
-  if (!pageIds || !Array.isArray(pageIds) || pageIds.length === 0) {
-    return sponsorService.createErrorResponse('Page IDs array is required');
-  }
-
   try {
     const options: Partial<DocumentPagesOptions> = {};
-    
-    // Adiciona content_format nas options se fornecido
+
     if (content_format) {
       options.content_format = content_format;
     }
+    if (max_page_depth !== undefined) {
+      options.max_page_depth = max_page_depth;
+    }
 
-    const pages = await clickUpServices.document.getDocumentPages(documentId, pageIds, options);
+    let pages;
+    if (Array.isArray(pageIds) && pageIds.length > 0) {
+      pages = await clickUpServices.document.getDocumentPages(documentId, pageIds, options);
+    } else {
+      pages = await clickUpServices.document.getAllPages(documentId, options as DocumentPagesOptions);
+    }
+
     return sponsorService.createResponse(pages);
   } catch (error: any) {
     return sponsorService.createErrorResponse(`Failed to get document pages: ${error.message}`);

@@ -66,7 +66,7 @@ export class DocumentService extends BaseClickUpService {
       const response = await this.client.post(`/workspaces/${this.teamId}/docs`, {
         name: data.name,
         parent: data.parent,
-        visibility: data.visibility || 'PRIVATE',
+        visibility: (data.visibility || 'private').toLowerCase() as 'public' | 'private',
         create_page: data.create_page !== undefined ? data.create_page : true
       });
       return response.data;
@@ -146,6 +146,22 @@ export class DocumentService extends BaseClickUpService {
   }
 
   /**
+   * Get the content of all pages in a document
+   * @param documentId - ID of the document
+   * @param options - Options for retrieving pages content
+   * @returns Document pages with content
+   */
+  async getAllPages(documentId: string, options: DocumentPagesOptions = {}): Promise<DocumentPagesResponse> {
+    try {
+      this.logOperation('Getting all pages for document with ID:', { documentId, options });
+      const response = await this.client.get(`/workspaces/${this.teamId}/docs/${documentId}/pages`, { params: options });
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error, `Failed to get pages for document ${documentId}`);
+    }
+  }
+
+  /**
    * Gets the content of specific pages in a document
    * @param documentId - ID of the document
    * @param pageIds - Array of page IDs to retrieve
@@ -154,19 +170,29 @@ export class DocumentService extends BaseClickUpService {
    */
   async getDocumentPages(documentId: string, pageIds: string[], options: Partial<DocumentPagesOptions> = {}): Promise<DocumentPagesResponse> {
     try {
-      // Get pages in parallel
       this.logOperation('Getting pages for document with ID:', { documentId, pageIds, options });
-      const pagePromises = pageIds.map(pageId => 
-        this.client.get(
-          `/workspaces/${this.teamId}/docs/${documentId}/pages/${pageId}`,
-          { params: { ...options, pageIds } }
-        )
-      );
-      const responses = await Promise.all(pagePromises);
-      const pages = responses.map(response => response.data);
+      const pagePromises = pageIds.map(pageId => this.getPage(documentId, pageId, options));
+      const pages = await Promise.all(pagePromises);
       return { pages };
     } catch (error) {
       throw this.handleError(error, `Failed to get pages for document ${documentId}`);
+    }
+  }
+
+  /**
+   * Gets a single page by ID
+   * @param documentId - ID of the document
+   * @param pageId - ID of the page to retrieve
+   * @param options - Options for retrieving page content
+   * @returns Document page details
+   */
+  async getPage(documentId: string, pageId: string, options: Partial<DocumentPagesOptions> = {}): Promise<ClickUpDocumentPage> {
+    try {
+      this.logOperation('Getting single page in document:', { documentId, pageId, options });
+      const response = await this.client.get(`/workspaces/${this.teamId}/docs/${documentId}/pages/${pageId}`, { params: options });
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error, `Failed to get page ${pageId} in document ${documentId}`);
     }
   }
 
@@ -185,7 +211,7 @@ export class DocumentService extends BaseClickUpService {
         {
           ...data,
           content_format: data.content_format || 'text/md',
-          content_edit_mode: data.content_edit_mode || 'append'
+          content_edit_mode: data.content_edit_mode || 'replace'
         }
       );
       return response.data;

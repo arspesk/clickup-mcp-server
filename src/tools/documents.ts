@@ -110,8 +110,8 @@ export const listDocumentsTool = {
       },
       parent_type: {
         type: "string",
-        enum: ["TASK", "SPACE", "FOLDER", "LIST", "EVERYTHING", "WORKSPACE"],
-        description: "Type of the parent container"
+        enum: ["space", "folder", "list"],
+        description: "Type of the parent container (space, folder, or list)"
       },
       limit: {
         type: "number",
@@ -385,7 +385,13 @@ export async function handleListDocuments(parameters: any) {
     if (deleted !== undefined) options.deleted = deleted;
     if (archived !== undefined) options.archived = archived;
     if (parent_id !== undefined) options.parent_id = parent_id;
-    if (parent_type !== undefined) options.parent_type = parent_type;
+    if (parent_type !== undefined) {
+      const normalized = String(parent_type).toLowerCase();
+      const allowed = ["space", "folder", "list"];
+      if (allowed.includes(normalized)) {
+        options.parent_type = normalized;
+      }
+    }
     if (limit !== undefined) options.limit = limit;
     if (next_cursor !== undefined) options.next_cursor = next_cursor;
 

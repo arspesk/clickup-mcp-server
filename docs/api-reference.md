@@ -988,6 +988,7 @@ Add the "feature" tag to the task "Implement Authentication"
   - List (6)
   - All (7)
   - Workspace (12)
+  - For `list_documents`, use lowercase values (`space`, `folder`, `list`)
 
 [^parent-type-note]: `parent_type` must be lowercase (`space`, `folder`, `list`).
 

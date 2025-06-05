@@ -170,13 +170,15 @@ services:
 | [resolve_assignees](docs/api-reference.md#member-management)          | Resolve member names to IDs     | `assignees[]`                                                                                                              |
 | [create_document](docs/api-reference.md#document-management)          | Create a document               | `workspaceId`, `name`, `parentId`/`parentType`, `visibility`, `create_pages`                                     |
 | [get_document](docs/api-reference.md#document-management)             | Get a document                  | `workspaceId`/`documentId`                                                                                               |
-| [list_documents](docs/api-reference.md#document-management)           | List documents                  | `workspaceId`, `documentId`/`creator`/`deleted`/`archived`/`parent_id`/`parent_type`/`limit`/`next_cursor` |
+| [list_documents](docs/api-reference.md#document-management)           | List documents                  | `workspaceId`, `documentId`/`creator`/`deleted`/`archived`/`parent_id`/`parent_type`/`limit`/`next_cursor`[^parent-type-note] |
 | [list_document_pages](docs/api-reference.md#document-management)      | List document pages             | `documentId`/`documentName`                                                                                              |
 | [get_document_pages](docs/api-reference.md#document-management)       | Get document pages              | `documentId`/`documentName`, `pageIds`                                                                                 |
 | [create_document_pages](docs/api-reference.md#document-management)    | Create a document page          | `workspaceId`/`documentId`, `parent_page_id`/`name`/`sub_title`,`content`/`content_format`                     |
 | [update_document_page](docs/api-reference.md#document-management)     | Update a document page          | `workspaceId`/`documentId`, `name`/`sub_title`,`content`/`content_edit_mode`/`content_format`                  |
 
 See [full documentation](docs/api-reference.md) for optional parameters and advanced usage.
+
+[^parent-type-note]: `parent_type` must be lowercase (`space`, `folder`, `list`).
 
 ## Member Management Tools
 

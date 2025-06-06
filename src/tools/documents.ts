@@ -23,7 +23,7 @@ const { document: documentService } = clickUpServices;
  */
 export const createDocumentTool = {
   name: "create_document",
-  description: `Creates a document in a ClickUp space, folder, or list. Requires name, parent info, visibility and create_page flag.`,
+  description: `Creates a document in a ClickUp space, folder, list, everything, or workspace. Parent.type uses numeric codes (4=SPACE, 5=FOLDER, 6=LIST, 7=EVERYTHING, 12=WORKSPACE). Requires name, parent info, visibility and create_page flag.`,
   inputSchema: {
     type: "object",
     properties: {
@@ -84,7 +84,7 @@ export const getDocumentTool = {
  */
 export const listDocumentsTool = {
   name: "list_documents",
-  description: `Lists all documents in a ClickUp space, folder, or list.`,
+  description: `Lists documents across containers. The parent_type filter accepts SPACE, FOLDER, LIST, EVERYTHING or WORKSPACE (case-insensitive).`,
   inputSchema: {
     type: "object",
     properties: {

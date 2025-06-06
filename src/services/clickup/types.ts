@@ -583,7 +583,7 @@ export interface ListDocumentsOptions {
   deleted?: boolean;
   archived?: boolean;
   parent_id?: string;
-  parent_type?: 'space' | 'folder' | 'list';
+  parent_type?: 'space' | 'folder' | 'list' | 'everything' | 'workspace';
   limit?: number;
   next_cursor?: string;
 }

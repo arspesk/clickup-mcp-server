@@ -988,6 +988,7 @@ Add the "feature" tag to the task "Implement Authentication"
   - LIST (6)
   - EVERYTHING (7)
   - WORKSPACE (12)
+  - Use these names for the `parent_type` parameter when listing documents (case-insensitive)
 
 - **Visibility Settings**:
   - public: Document is visible to all workspace members

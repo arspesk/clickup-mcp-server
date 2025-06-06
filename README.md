@@ -178,7 +178,7 @@ services:
 
 See [full documentation](docs/api-reference.md) for optional parameters and advanced usage.
 
-[^parent-type-note]: `parent_type` must be lowercase (`space`, `folder`, `list`).
+[^parent-type-note]: Valid values for `parent_type` are `SPACE`, `FOLDER`, `LIST`, `EVERYTHING`, and `WORKSPACE` (case-insensitive).
 
 ## Member Management Tools
 
